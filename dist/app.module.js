@@ -11,6 +11,8 @@ const common_1 = require("@nestjs/common");
 const user_module_1 = require("./user/user.module");
 const db_module_1 = require("./db/db.module");
 const core_1 = require("@nestjs/core");
+const gateway_module_1 = require("./gateway/gateway.module");
+const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -21,8 +23,14 @@ AppModule = __decorate([
                     path: 'user',
                     module: user_module_1.UserModule,
                 },
+                {
+                    path: 'auth',
+                    module: auth_module_1.AuthModule
+                }
             ]),
             user_module_1.UserModule,
+            auth_module_1.AuthModule,
+            gateway_module_1.GatewayModule,
             db_module_1.DbModule,
         ],
         controllers: [],
