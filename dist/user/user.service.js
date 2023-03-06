@@ -5,22 +5,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
+const user_model_1 = require("./user.model");
 let UserService = class UserService {
-    constructor(Model) {
-        this.Model = Model;
-    }
     async createNewUser(data) {
         try {
-            const res = await this.Model.query().insert({
+            const res = await user_model_1.UserModel.query().insert({
                 name: data.name,
                 email: data.email,
                 phoneNumber: data.phoneNumber,
@@ -36,7 +28,7 @@ let UserService = class UserService {
     }
     async getAllUsers() {
         try {
-            const res = await this.Model.query().where({ isDeleted: 0 });
+            const res = await user_model_1.UserModel.query().where({ isDeleted: 0 });
             return res;
         }
         catch (error) {
@@ -45,7 +37,7 @@ let UserService = class UserService {
     }
     async updateUser(data) {
         try {
-            const res = await this.Model.query().patchAndFetchById(data.id, {
+            const res = await user_model_1.UserModel.query().patchAndFetchById(data.id, {
                 name: data.name,
                 email: data.email,
                 dateOfBirth: data.dateOfBirth,
@@ -61,7 +53,7 @@ let UserService = class UserService {
     }
     async deleteUserById(id) {
         try {
-            const res = await this.Model.query().patchAndFetchById(id, { isDeleted: 1 });
+            const res = await user_model_1.UserModel.query().patchAndFetchById(id, { isDeleted: 1 });
             return res;
         }
         catch (error) {
@@ -70,9 +62,7 @@ let UserService = class UserService {
     }
 };
 UserService = __decorate([
-    (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)('UserModel')),
-    __metadata("design:paramtypes", [Object])
+    (0, common_1.Injectable)()
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

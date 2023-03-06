@@ -11,7 +11,7 @@ import {
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { UserService } from './user.service';
-import { userGetSchema, userUpdateSchema } from '../swagger_schema';
+import { CreateUser, UpdateUser } from '../utils/dto/user.dto';
 
 @ApiTags('user')
 @Controller()
@@ -20,13 +20,11 @@ export class UserController {
 
   @Post('createUser')
   @ApiBody({
-    schema: {
-      type: 'object',
-      properties: userGetSchema,
-    },
+    type: () => CreateUser,
+    description: 'response of the user details with required fields'
   })
   @ApiOperation({ summary: 'Creating a new user' })
-  async createNewUser(@Body() datum, @Res() res: Response) {
+  async createNewUser(@Body() datum: CreateUser, @Res() res: Response) {
     try {
       const resp = await this.userService.createNewUser(datum);
 
@@ -42,6 +40,7 @@ export class UserController {
   async getAllUsers(@Res() res: Response) {
     try {
       const data = await this.userService.getAllUsers();
+      console.log(data);
 
       if (data) return res.status(200).send(data);
       return res.status(400).send(data);
@@ -52,10 +51,8 @@ export class UserController {
 
   @Put('updateUser')
   @ApiBody({
-    schema: {
-      type: 'object',
-      properties: userUpdateSchema,
-    },
+    type: () => UpdateUser,
+    description: 'Request to Update the User details'
   })
   @ApiOperation({ summary: 'Update the user' })
   async updateUser(@Body() datum, @Res() res: Response) {

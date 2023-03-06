@@ -16,7 +16,7 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const user_service_1 = require("./user.service");
-const swagger_schema_1 = require("../swagger_schema");
+const user_dto_1 = require("../utils/dto/user.dto");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -35,6 +35,7 @@ let UserController = class UserController {
     async getAllUsers(res) {
         try {
             const data = await this.userService.getAllUsers();
+            console.log(data);
             if (data)
                 return res.status(200).send(data);
             return res.status(400).send(data);
@@ -69,16 +70,14 @@ let UserController = class UserController {
 __decorate([
     (0, common_1.Post)('createUser'),
     (0, swagger_1.ApiBody)({
-        schema: {
-            type: 'object',
-            properties: swagger_schema_1.userGetSchema,
-        },
+        type: () => user_dto_1.CreateUser,
+        description: 'response of the user details with required fields'
     }),
     (0, swagger_1.ApiOperation)({ summary: 'Creating a new user' }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [user_dto_1.CreateUser, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "createNewUser", null);
 __decorate([
@@ -92,10 +91,8 @@ __decorate([
 __decorate([
     (0, common_1.Put)('updateUser'),
     (0, swagger_1.ApiBody)({
-        schema: {
-            type: 'object',
-            properties: swagger_schema_1.userUpdateSchema,
-        },
+        type: () => user_dto_1.UpdateUser,
+        description: 'Request to Update the User details'
     }),
     (0, swagger_1.ApiOperation)({ summary: 'Update the user' }),
     __param(0, (0, common_1.Body)()),
