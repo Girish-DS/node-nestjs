@@ -8,11 +8,45 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthenticationService = void 0;
 const common_1 = require("@nestjs/common");
+const user_model_1 = require("../db/model/user.model");
 let AuthenticationService = class AuthenticationService {
     async login(mail, password) {
-        return { data: { mail: mail, password: password } };
+        try {
+            if (!mail || !password) {
+                return { errors: [{ type: 'Missing Fields', message: 'Please give the proper email and password' }] };
+            }
+            const user = await user_model_1.User.query().findOne('email', mail);
+            if (!user) {
+                return { errors: [{ type: 'No User', message: 'There is no such user with this email' }] };
+            }
+            if (!await this.bcrypt.verifyPassword(password, user.password)) {
+                return { errors: [{ type: 'Incorrect password', message: 'Incorrect password' }] };
+            }
+            const userDetails = {
+                name: user.name,
+                email: user.email,
+                dob: user.dateOfBirth
+            };
+            return await this.bcrypt.genToken(userDetails);
+        }
+        catch (error) {
+            return { errors: [{ type: 'Catch', message: error }] };
+        }
     }
-    async signup(payload) { }
+    async signup(payload) {
+        try {
+            const hash = this.bcrypt.hashPassword(payload.password);
+            payload.password = hash;
+            const user = user_model_1.User.query().insert(payload).then().catch();
+            if (user) {
+                return { message: 'User Created Successfully', isTrue: true };
+            }
+            return { message: 'Create User Failed', isTrue: false };
+        }
+        catch (error) {
+            return { errors: [{ type: 'Catch', message: error }] };
+        }
+    }
 };
 AuthenticationService = __decorate([
     (0, common_1.Injectable)()

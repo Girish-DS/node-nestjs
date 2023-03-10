@@ -10,12 +10,12 @@ exports.UserModule = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const user_controller_1 = require("./user.controller");
-const user_model_1 = require("./user.model");
+const user_model_1 = require("../db/model/user.model");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
-        imports: [user_model_1.UserModel],
+        imports: [user_model_1.User],
         providers: [user_service_1.UserService],
         controllers: [user_controller_1.UserController],
     })

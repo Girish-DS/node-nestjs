@@ -1,9 +1,17 @@
+import { BCrypt } from "../utils/bcrypt";
 export declare class AuthenticationService {
-    login(mail: string, password: string): Promise<{
-        data: {
-            mail: string;
-            password: string;
-        };
+    bcrypt: BCrypt;
+    login(mail: string, password: string): Promise<any>;
+    signup(payload: any): Promise<{
+        message: string;
+        isTrue: boolean;
+        errors?: undefined;
+    } | {
+        errors: {
+            type: string;
+            message: any;
+        }[];
+        message?: undefined;
+        isTrue?: undefined;
     }>;
-    signup(payload: any): Promise<void>;
 }

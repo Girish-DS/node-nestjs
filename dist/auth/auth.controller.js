@@ -23,14 +23,21 @@ let Authentication = class Authentication {
         this.logger = new common_1.Logger();
     }
     async login(mail, password, res) {
-        this.logger.log('Starting to authenticate the user :: { start }');
+        this.logger.log('Starting to Authenticate the user Controller :: { start }');
         const auth = await this.authService.login(mail, password);
-        if (auth && auth.data) {
+        if (auth && auth) {
             return res.status(common_1.HttpStatus.OK).send(auth);
         }
         return res.status(common_1.HttpStatus.BAD_REQUEST).send(auth);
     }
-    async signup() { }
+    async signup(userDetails, res) {
+        this.logger.log('Starting to create a user Controller :: { start }');
+        const user = await this.authService.signup(userDetails);
+        if (user) {
+            return res.status(common_1.HttpStatus.CREATED).send(user);
+        }
+        return res.status(common_1.HttpStatus.BAD_REQUEST).send(user);
+    }
 };
 __decorate([
     (0, common_1.Get)('/:mail/:password'),
@@ -57,8 +64,10 @@ __decorate([
         type: () => user_dto_1.CreateUser,
         description: 'Request payload to create new user.'
     }),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [user_dto_1.CreateUser, Object]),
     __metadata("design:returntype", Promise)
 ], Authentication.prototype, "signup", null);
 Authentication = __decorate([
