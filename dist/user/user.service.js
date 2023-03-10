@@ -8,11 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
-const user_model_1 = require("./user.model");
+const user_model_1 = require("../db/model/user.model");
 let UserService = class UserService {
     async createNewUser(data) {
         try {
-            const res = await user_model_1.UserModel.query().insert({
+            const res = await user_model_1.User.query().insert({
                 name: data.name,
                 email: data.email,
                 phoneNumber: data.phoneNumber,
@@ -28,7 +28,7 @@ let UserService = class UserService {
     }
     async getAllUsers() {
         try {
-            const res = await user_model_1.UserModel.query().where({ isDeleted: 0 });
+            const res = await user_model_1.User.query().where({ isDeleted: 0 });
             return res;
         }
         catch (error) {
@@ -37,7 +37,7 @@ let UserService = class UserService {
     }
     async updateUser(data) {
         try {
-            const res = await user_model_1.UserModel.query().patchAndFetchById(data.id, {
+            const res = await user_model_1.User.query().patchAndFetchById(data.id, {
                 name: data.name,
                 email: data.email,
                 dateOfBirth: data.dateOfBirth,
@@ -53,7 +53,7 @@ let UserService = class UserService {
     }
     async deleteUserById(id) {
         try {
-            const res = await user_model_1.UserModel.query().patchAndFetchById(id, { isDeleted: 1 });
+            const res = await user_model_1.User.query().patchAndFetchById(id, { isDeleted: 1 });
             return res;
         }
         catch (error) {

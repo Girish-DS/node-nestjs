@@ -25,44 +25,43 @@ let UserController = class UserController {
         try {
             const resp = await this.userService.createNewUser(datum);
             if (resp)
-                return res.status(201).send(resp);
-            return res.status(405).send(resp);
+                return res.status(common_1.HttpStatus.CREATED).send(resp);
+            return res.status(common_1.HttpStatus.METHOD_NOT_ALLOWED).send(resp);
         }
         catch (error) {
-            return res.status(400).send(error);
+            return res.status(common_1.HttpStatus.BAD_REQUEST).send(error);
         }
     }
     async getAllUsers(res) {
         try {
             const data = await this.userService.getAllUsers();
-            console.log(data);
             if (data)
-                return res.status(200).send(data);
-            return res.status(400).send(data);
+                return res.status(common_1.HttpStatus.OK).send(data);
+            return res.status(common_1.HttpStatus.BAD_REQUEST).send(data);
         }
         catch (error) {
-            return res.status(400).send([]);
+            return res.status(common_1.HttpStatus.BAD_REQUEST).send(error);
         }
     }
     async updateUser(datum, res) {
         try {
             const data = await this.userService.updateUser(datum);
-            return res.status(400).send(data);
+            return res.status(common_1.HttpStatus.BAD_REQUEST).send(data);
         }
         catch (error) {
-            return res.status(400).send(error);
+            return res.status(common_1.HttpStatus.BAD_REQUEST).send(error);
         }
     }
     async deleteUserById(id, res) {
         try {
             const data = await this.userService.deleteUserById(id);
             if (data)
-                return res.status(200).send(data);
-            return res.status(400).send(data);
+                return res.status(common_1.HttpStatus.OK).send(data);
+            return res.status(common_1.HttpStatus.BAD_REQUEST).send(data);
         }
         catch (error) {
             return res
-                .status(400)
+                .status(common_1.HttpStatus.BAD_REQUEST)
                 .send({ errorMessage: 'Something went wrong', error });
         }
     }

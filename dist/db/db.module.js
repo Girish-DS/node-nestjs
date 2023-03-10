@@ -10,8 +10,8 @@ exports.DbModule = void 0;
 const common_1 = require("@nestjs/common");
 const knex_1 = require("knex");
 const objection_1 = require("objection");
-const user_model_1 = require("../user/user.model");
-const models = [user_model_1.UserModel];
+const user_model_1 = require("./model/user.model");
+const models = [user_model_1.User];
 const modelProviders = models.map((model) => ({
     provide: model.name,
     useValue: model,

@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Logger, Param, Post, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Logger, Param, Post, Res } from "@nestjs/common";
 import { ApiBody, ApiParam, ApiTags } from "@nestjs/swagger";
 import { Response } from "express";
 import { CreateUser } from "../utils/dto/user.dto";
@@ -25,11 +25,11 @@ export class Authentication {
     })
     async login( @Param('mail') mail: string, @Param('password') password: string, @Res() res: Response ) {
 
-        this.logger.log('Starting to authenticate the user :: { start }');
+        this.logger.log('Starting to Authenticate the user Controller :: { start }');
 
         const auth = await this.authService.login(mail, password);
 
-        if( auth && auth.data ) {
+        if( auth && auth ) {
             return res.status(HttpStatus.OK).send(auth);
         }
 
@@ -41,5 +41,16 @@ export class Authentication {
         type: () => CreateUser,
         description: 'Request payload to create new user.'
     })
-    async signup() {}
+    async signup( @Body() userDetails: CreateUser, @Res() res: Response ) {
+
+        this.logger.log('Starting to create a user Controller :: { start }');
+
+        const user = await this.authService.signup(userDetails);
+
+        if( user ) {
+            return res.status(HttpStatus.CREATED).send(user);
+        }
+
+        return res.status(HttpStatus.BAD_REQUEST).send(user);
+    }
 }

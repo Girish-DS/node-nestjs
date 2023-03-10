@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -28,10 +29,10 @@ export class UserController {
     try {
       const resp = await this.userService.createNewUser(datum);
 
-      if (resp) return res.status(201).send(resp);
-      return res.status(405).send(resp);
+      if (resp) return res.status(HttpStatus.CREATED).send(resp);
+      return res.status(HttpStatus.METHOD_NOT_ALLOWED).send(resp);
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(HttpStatus.BAD_REQUEST).send(error);
     }
   }
 
@@ -40,12 +41,11 @@ export class UserController {
   async getAllUsers(@Res() res: Response) {
     try {
       const data = await this.userService.getAllUsers();
-      console.log(data);
 
-      if (data) return res.status(200).send(data);
-      return res.status(400).send(data);
+      if (data) return res.status(HttpStatus.OK).send(data);
+      return res.status(HttpStatus.BAD_REQUEST).send(data);
     } catch (error) {
-      return res.status(400).send([]);
+      return res.status(HttpStatus.BAD_REQUEST).send(error);
     }
   }
 
@@ -58,9 +58,9 @@ export class UserController {
   async updateUser(@Body() datum, @Res() res: Response) {
     try {
       const data = await this.userService.updateUser(datum);
-      return res.status(400).send(data);
+      return res.status(HttpStatus.BAD_REQUEST).send(data);
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(HttpStatus.BAD_REQUEST).send(error);
     }
   }
 
@@ -75,11 +75,11 @@ export class UserController {
   async deleteUserById(@Param('id') id, @Res() res: Response) {
     try {
       const data = await this.userService.deleteUserById(id);
-      if (data) return res.status(200).send(data);
-      return res.status(400).send(data);
+      if (data) return res.status(HttpStatus.OK).send(data);
+      return res.status(HttpStatus.BAD_REQUEST).send(data);
     } catch (error) {
       return res
-        .status(400)
+        .status(HttpStatus.BAD_REQUEST)
         .send({ errorMessage: 'Something went wrong', error });
     }
   }
