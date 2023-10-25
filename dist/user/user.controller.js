@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const user_service_1 = require("./user.service");
 const user_dto_1 = require("../utils/dto/user.dto");
+const auth_guard_1 = require("../common/helper/auth.guard");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -68,6 +69,8 @@ let UserController = class UserController {
 };
 __decorate([
     (0, common_1.Post)('createUser'),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, swagger_1.ApiBody)({
         type: () => user_dto_1.CreateUser,
         description: 'response of the user details with required fields'
@@ -81,6 +84,8 @@ __decorate([
 ], UserController.prototype, "createNewUser", null);
 __decorate([
     (0, common_1.Get)('allUsers'),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, swagger_1.ApiOperation)({ summary: 'Get all the users list' }),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -89,6 +94,8 @@ __decorate([
 ], UserController.prototype, "getAllUsers", null);
 __decorate([
     (0, common_1.Put)('updateUser'),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, swagger_1.ApiBody)({
         type: () => user_dto_1.UpdateUser,
         description: 'Request to Update the User details'
@@ -102,6 +109,8 @@ __decorate([
 ], UserController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Delete)('deleteUserById/:id'),
+    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, swagger_1.ApiParam)({
         name: 'id',
         description: 'delete the user with id',

@@ -8,16 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
 const user_module_1 = require("./user/user.module");
 const db_module_1 = require("./db/db.module");
 const core_1 = require("@nestjs/core");
 const gateway_module_1 = require("./gateway/gateway.module");
 const auth_module_1 = require("./auth/auth.module");
+const env_helper_1 = require("./common/helper/env.helper");
+const path = require('path');
+const dirPath = path.join(__dirname, '../src/common/envs');
+const envFilePath = (0, env_helper_1.getEnvPath)(dirPath);
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                envFilePath,
+            }),
             core_1.RouterModule.register([
                 {
                     path: 'user',

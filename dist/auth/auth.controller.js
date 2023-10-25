@@ -40,19 +40,19 @@ let Authentication = class Authentication {
     }
 };
 __decorate([
-    (0, common_1.Get)('/:mail/:password'),
-    (0, swagger_1.ApiParam)({
+    (0, common_1.Get)('login'),
+    (0, swagger_1.ApiQuery)({
         name: 'mail',
         type: 'string',
         required: true
     }),
-    (0, swagger_1.ApiParam)({
+    (0, swagger_1.ApiQuery)({
         name: 'password',
         type: 'string',
         required: true
     }),
-    __param(0, (0, common_1.Param)('mail')),
-    __param(1, (0, common_1.Param)('password')),
+    __param(0, (0, common_1.Query)('mail')),
+    __param(1, (0, common_1.Query)('password')),
     __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String, Object]),
