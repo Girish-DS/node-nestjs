@@ -1,5 +1,5 @@
-import { Body, Controller, Get, HttpStatus, Logger, Param, Post, Res } from "@nestjs/common";
-import { ApiBody, ApiParam, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, HttpStatus, Logger, Post, Query, Res } from "@nestjs/common";
+import { ApiBody, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { Response } from "express";
 import { CreateUser } from "../utils/dto/user.dto";
 import { AuthenticationService } from "./auth.service";
@@ -12,18 +12,18 @@ export class Authentication {
     
     constructor ( private authService: AuthenticationService ) {}
 
-    @Get('/:mail/:password')
-    @ApiParam({
+    @Get('login')
+    @ApiQuery({
         name: 'mail',
         type: 'string',
         required: true
     })
-    @ApiParam({
+    @ApiQuery({
         name: 'password',
         type: 'string',
         required: true
     })
-    async login( @Param('mail') mail: string, @Param('password') password: string, @Res() res: Response ) {
+    async login( @Query('mail') mail: string, @Query('password') password: string, @Res() res: Response ) {
 
         this.logger.log('Starting to Authenticate the user Controller :: { start }');
 

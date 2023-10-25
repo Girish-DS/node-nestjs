@@ -50,7 +50,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         type: 'string',
         description: 'User Date of Birth',
-        default: '12-13-1999'
+        default: '1999-12-13'
     }),
     __metadata("design:type", String)
 ], CreateUser.prototype, "dateOfBirth", void 0);

@@ -35,7 +35,7 @@ export class CreateUser {
     @ApiProperty({
         type: 'string',
         description: 'User Date of Birth',
-        default: '12-13-1999'
+        default: '1999-12-13'
     })
     dateOfBirth: string
 

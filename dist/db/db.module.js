@@ -33,7 +33,7 @@ const providers = [
                 }
             });
             db.raw('select 1+1 as result').then(() => {
-                console.log('DB connected');
+                console.log('DataBase connected');
             }).catch(e => {
                 console.log("Database Error", e);
             });

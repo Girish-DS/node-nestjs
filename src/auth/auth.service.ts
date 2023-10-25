@@ -1,11 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { User } from "../db/model/user.model";
-import { BCrypt }from "../utils/bcrypt";
+import { verifyPassword, genToken, hashPassword } from "../utils/bcrypt";
 
 @Injectable()
 export class AuthenticationService {
-
-    public bcrypt: BCrypt;
 
     async login(mail: string, password: string) {
         try {
@@ -19,7 +17,7 @@ export class AuthenticationService {
                 return { errors: [{ type: 'No User', message: 'There is no such user with this email' }] };
             }
 
-            if ( !await this.bcrypt.verifyPassword(password, user.password) ) {
+            if ( !verifyPassword(password, user.password) ) {
                 return { errors: [{ type: 'Incorrect password', message: 'Incorrect password' }] };
             }
 
@@ -28,16 +26,18 @@ export class AuthenticationService {
                 email: user.email,
                 dob: user.dateOfBirth
             }
-            return await this.bcrypt.genToken(userDetails);
+            return{ accessToken: genToken(userDetails) };
 
         } catch (error) {            
+            console.log(error);
+            
             return { errors: [{ type: 'Catch', message: error }] };
         }
     }
 
     async signup(payload) {
         try {
-            const hash = this.bcrypt.hashPassword(payload.password);
+            const hash = await hashPassword(payload.password);
 
             payload.password = hash;
 

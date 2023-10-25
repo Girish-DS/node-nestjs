@@ -8,11 +8,13 @@ import {
   Post,
   Put,
   Res,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { UserService } from './user.service';
 import { CreateUser, UpdateUser } from '../utils/dto/user.dto';
+import { AuthGuard } from '../common/helper/auth.guard';
 
 @ApiTags('user')
 @Controller()
@@ -20,6 +22,8 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Post('createUser')
+  @ApiBearerAuth('JWT')
+  @UseGuards(AuthGuard)
   @ApiBody({
     type: () => CreateUser,
     description: 'response of the user details with required fields'
@@ -37,6 +41,8 @@ export class UserController {
   }
 
   @Get('allUsers')
+  @ApiBearerAuth('JWT')
+  @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Get all the users list' })
   async getAllUsers(@Res() res: Response) {
     try {
@@ -50,6 +56,8 @@ export class UserController {
   }
 
   @Put('updateUser')
+  @ApiBearerAuth('JWT')
+  @UseGuards(AuthGuard)
   @ApiBody({
     type: () => UpdateUser,
     description: 'Request to Update the User details'
@@ -65,6 +73,8 @@ export class UserController {
   }
 
   @Delete('deleteUserById/:id')
+  @ApiBearerAuth('JWT')
+  @UseGuards(AuthGuard)
   @ApiParam({
     name: 'id',
     description: 'delete the user with id',

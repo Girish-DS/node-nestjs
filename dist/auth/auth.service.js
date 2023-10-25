@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthenticationService = void 0;
 const common_1 = require("@nestjs/common");
 const user_model_1 = require("../db/model/user.model");
+const bcrypt_1 = require("../utils/bcrypt");
 let AuthenticationService = class AuthenticationService {
     async login(mail, password) {
         try {
@@ -19,7 +20,7 @@ let AuthenticationService = class AuthenticationService {
             if (!user) {
                 return { errors: [{ type: 'No User', message: 'There is no such user with this email' }] };
             }
-            if (!await this.bcrypt.verifyPassword(password, user.password)) {
+            if (!(0, bcrypt_1.verifyPassword)(password, user.password)) {
                 return { errors: [{ type: 'Incorrect password', message: 'Incorrect password' }] };
             }
             const userDetails = {
@@ -27,15 +28,16 @@ let AuthenticationService = class AuthenticationService {
                 email: user.email,
                 dob: user.dateOfBirth
             };
-            return await this.bcrypt.genToken(userDetails);
+            return { accessToken: (0, bcrypt_1.genToken)(userDetails) };
         }
         catch (error) {
+            console.log(error);
             return { errors: [{ type: 'Catch', message: error }] };
         }
     }
     async signup(payload) {
         try {
-            const hash = this.bcrypt.hashPassword(payload.password);
+            const hash = await (0, bcrypt_1.hashPassword)(payload.password);
             payload.password = hash;
             const user = user_model_1.User.query().insert(payload).then().catch();
             if (user) {

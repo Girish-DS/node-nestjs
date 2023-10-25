@@ -1,21 +1,15 @@
-import { Injectable } from "@nestjs/common";
 import * as bcrypt from "bcrypt";
-import jwt from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 
-@Injectable()
-export class BCrypt {
-
-    async verifyPassword(password, saved): Promise<any> {
-        return bcrypt.compareSync(password, saved)
-    }
+export const verifyPassword = (password, saved) => {
+    return bcrypt.compareSync(password, saved)
+}
     
-    async genToken(details): Promise<any> {
-        return jwt.sign(details, process.env.HASH_KEY, {expiresIn: "60m"});
-    }
+export const genToken = (details) => {
+    return sign(details, process.env.HASH_KEY, { expiresIn: "60m" });
+}
 
-    async hashPassword(password): Promise<string> {
-        const salt = await bcrypt.genSalt(Number(process.env.SALT));
-        return await bcrypt.hash(password, salt);
-    }
-
+export const hashPassword = async (password) => {
+    const salt = await bcrypt.genSalt(Number(process.env.SALT));
+    return await bcrypt.hash(password, salt);
 }
